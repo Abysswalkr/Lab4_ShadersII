@@ -16,15 +16,14 @@ class Buffer(object):
         self.VAO = glGenVertexArrays(1)
 
     def Render(self):
-        glBindBuffer(GL_ARRAY_BUFFER, self.VBO)
         glBindVertexArray(self.VAO)
+        glBindBuffer(GL_ARRAY_BUFFER, self.VBO)
 
         # send vertex information
         glBufferData(GL_ARRAY_BUFFER,  # Buffer ID
                      self.vertBuffer.nbytes,  # Buffer size in bytes
                      self.vertBuffer,  # Buffer data
-                     GL_STATIC_DRAW,  # Usage
-                     )
+                     GL_STATIC_DRAW)  # Usage
 
         # Attributes
         glVertexAttribPointer(0,  # Attribute number (let on 0)

@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from gl import Renderer
 from buffer import Buffer
-from shaders import *
+from shaders import animated_vertex_shader, gradient_fragment_shader  # Importar los nuevos shaders
 from model import Model
 
 width = 960
@@ -14,14 +14,9 @@ screen = pygame.display.set_mode((width, height), pygame.OPENGL | pygame.DOUBLEB
 clock = pygame.time.Clock()
 
 rend = Renderer(screen)
-rend.SetShaders(vertex_shader, fragment_shader)
-# triangle positions         #color
-# triangle = [-0.5, -0.5, 0,  1, 0, 0,
-#             0, 0.5, 0,      0, 1, 0,
-#             0.5, -0.5, 0,   0, 0, 1
-#             ]
 
-# rend.scene.append(Buffer(triangle))
+# Nuevos Shaders
+rend.SetShaders(animated_vertex_shader, gradient_fragment_shader)
 
 faceModel = Model("models/model.obj")
 faceModel.AddTexture("textures/model.bmp")
@@ -52,8 +47,6 @@ while isRunnig:
             elif event.key == pygame.K_2:
                 rend.WireframeMode()
 
-    # print(deltaTime)
-
     if keys[K_LEFT]:
         faceModel.rotation.y -= 40 * deltaTime
 
@@ -79,5 +72,3 @@ while isRunnig:
     pygame.display.flip()
 
 pygame.quit()
-
-# skeleton
