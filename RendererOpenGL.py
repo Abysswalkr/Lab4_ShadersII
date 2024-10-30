@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from gl import Renderer
 from buffer import Buffer
-from shaders import animated_vertex_shader, gradient_fragment_shader  # Importar los nuevos shaders
+from shaders import *
 from model import Model
 
 width = 960
@@ -16,7 +16,7 @@ clock = pygame.time.Clock()
 rend = Renderer(screen)
 
 # Nuevos Shaders
-rend.SetShaders(animated_vertex_shader, gradient_fragment_shader)
+rend.SetShaders(pulsating_vertex_shader, pulsating_fragment_shader)
 
 faceModel = Model("models/model.obj")
 faceModel.AddTexture("textures/model.bmp")

@@ -1,14 +1,16 @@
 import glm
+
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileProgram, compileShader
 from camera import Camera
+
 
 class Renderer(object):
     def __init__(self, screen):
         self.screen = screen
         _, _, self.width, self.height = screen.get_rect()
 
-        glClearColor(0.2, 0.2, 0.2, 1)  # set background color
+        glClearColor(0.2, 0.2, 0.2, 1)  # set backoground color
 
         glEnable(GL_DEPTH_TEST)
         glViewport(0, 0, self.width, self.height)
@@ -43,17 +45,15 @@ class Renderer(object):
             glUniform1f(glGetUniformLocation(self.active_shaders, "time"), self.time)
 
             glUniformMatrix4fv(glGetUniformLocation(self.active_shaders, "viewMatrix"), 1, GL_FALSE,
-                               glm.value_ptr(self.camera.GetViewMatrix()))
+                               glm.value_ptr(self.camera.GetViewMaTrix()))
 
             glUniformMatrix4fv(glGetUniformLocation(self.active_shaders, "projectionMatrix"), 1, GL_FALSE,
                                glm.value_ptr(self.camera.GetProjectionMatrix()))
 
         for obj in self.scene:
+
             if self.active_shaders is not None:
                 glUniformMatrix4fv(glGetUniformLocation(self.active_shaders, "modelMatrix"), 1, GL_FALSE,
                                    glm.value_ptr(obj.GetModelMatrix()))
 
             obj.Render()
-
-        # Unbind shaders
-        glUseProgram(0)

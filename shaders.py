@@ -84,7 +84,6 @@ void main()
     fragColor = vec4(lighting, 1.0) * texColor;
 }
 '''
-
 # Nuevos Shaders
 
 animated_vertex_shader = '''
@@ -141,6 +140,64 @@ void main()
     vec3 color = mix(vec3(0.0, 0.0, 1.0), vec3(1.0, 0.0, 0.0), height);
     
     // Combinar el color del degradado con la textura
+    fragColor = vec4(color, 1.0) * texture(tex, outTexCoords);
+}
+'''
+
+pulsating_vertex_shader = '''
+#version 450 core
+
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec2 texCoords;
+layout (location = 2) in vec3 normals;
+
+out vec2 outTexCoords;
+out vec3 outNormals;
+out vec3 FragPos;
+
+uniform float time;
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
+
+void main()
+{
+    // Efecto de pulsación usando seno del tiempo
+    float scale = 1.0 + 0.1 * sin(time * 2.0);
+    vec3 pulsatingPosition = position * scale;
+
+    // Calcular FragPos en espacio mundo
+    FragPos = vec3(modelMatrix * vec4(pulsatingPosition, 1.0));
+
+    // Pasar normales al espacio mundo
+    outNormals = mat3(transpose(inverse(modelMatrix))) * normals;
+
+    // Pasar coordenadas de textura
+    outTexCoords = texCoords;
+
+    // Calcular la posición final del vértice
+    gl_Position = projectionMatrix * viewMatrix * vec4(FragPos, 1.0);
+}
+'''
+
+pulsating_fragment_shader = '''
+#version 450 core
+
+in vec2 outTexCoords;
+in vec3 outNormals;
+in vec3 FragPos;
+
+out vec4 fragColor;
+
+uniform sampler2D tex;
+uniform float time;
+
+void main()
+{
+    // Cambiar el color entre azul y amarillo usando el tiempo
+    vec3 color = mix(vec3(0.0, 0.0, 1.0), vec3(1.0, 1.0, 0.0), (sin(time * 2.0) + 1.0) / 2.0);
+    
+    // Combinar el color del pulsado con la textura
     fragColor = vec4(color, 1.0) * texture(tex, outTexCoords);
 }
 
