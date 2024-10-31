@@ -16,7 +16,7 @@ clock = pygame.time.Clock()
 rend = Renderer(screen)
 
 # Nuevos Shaders
-rend.SetShaders(pulsating_vertex_shader, pulsating_fragment_shader)
+rend.SetShaders(scan_vertex_shader, scan_fragment_shader)
 
 faceModel = Model("models/model.obj")
 faceModel.AddTexture("textures/model.bmp")
